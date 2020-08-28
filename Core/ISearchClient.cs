@@ -3,7 +3,11 @@ using System.Threading.Tasks;
 
 namespace Core
 {
-    public interface ISearchClient<TSearchIndex> where TSearchIndex : ISearchIndex
+    public interface ISearchClient<TSearchIndex> : ISearchClient where TSearchIndex : ISearchIndex
+    {
+    }
+
+    public interface ISearchClient
     {
         Task<long> CountAsync();
         Task DeleteIndexAndDocumentsAsync();

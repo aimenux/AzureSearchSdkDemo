@@ -1,10 +1,14 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Core;
 
 namespace App.Examples
 {
     public interface IExample
     {
-        public string Description { get; }
-        public Task RunAsync();
+        string Description { get; }
+        Task CountAsync();
+        Task DeleteAllAsync();
+        Task UploadAsync(ICollection<ISearchModel> models);
     }
 }

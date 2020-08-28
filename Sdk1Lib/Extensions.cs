@@ -1,13 +1,16 @@
 ﻿using System;
+using Core;
 using Microsoft.Azure.Search;
 using Microsoft.Azure.Search.Models;
 
 namespace Sdk1Lib
 {
-    public static class SearchServiceClientExtensions
+    public static class Extensions
     {
-        public static ISearchIndexClient GetOrCreateSearchIndexClient<T>(this ISearchServiceClient searchServiceClient, string indexName)
+        public static ISearchIndexClient GetOrCreateSearchIndexClient<T>(this ISearchServiceClient searchServiceClient, Settings settings)
         {
+            var indexName = settings.IndexName;
+
             if (!searchServiceClient.Indexes.Exists(indexName))
             {
                 searchServiceClient.CreateIndex<T>(indexName);
