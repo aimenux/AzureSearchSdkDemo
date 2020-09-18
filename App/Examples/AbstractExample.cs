@@ -10,36 +10,43 @@ namespace App.Examples
 {
     public abstract class AbstractExample : IExample
     {
-        private readonly ISearchClient _searchClient;
-        private readonly ILogger _logger;
+        protected readonly ISearchClient SearchClient;
+        protected readonly ILogger Logger;
 
         protected AbstractExample(ISearchClient searchClient, ILogger logger)
         {
-            _searchClient = searchClient;
-            _logger = logger;
+            SearchClient = searchClient;
+            Logger = logger;
         }
 
         public abstract string Description { get; }
 
-        public Task CountAsync()
+        public virtual Task CountAsync()
         {
-            var task = _searchClient.CountAsync();
+            var task = SearchClient.CountAsync();
             return TryCatchMonitorAsync(task);
         }
 
-        public Task DeleteAllAsync()
+        public Task SearchAsync()
         {
-            var task = _searchClient.DeleteIndexAndDocumentsAsync();
+            const string searchText = "AT*";
+            var task = SearchClient.GetAsync<SearchModel>(searchText);
             return TryCatchMonitorAsync(task);
         }
 
-        public Task UploadAsync(ICollection<ISearchModel> models)
+        public virtual Task DeleteAllAsync()
         {
-            var task = _searchClient.SaveAsync(models);
+            var task = SearchClient.DeleteIndexAndDocumentsAsync();
             return TryCatchMonitorAsync(task);
         }
 
-        private async Task TryCatchMonitorAsync(Task task, [CallerMemberName] string caller = null)
+        public virtual Task UploadAsync(ICollection<ISearchModel> models)
+        {
+            var task = SearchClient.SaveAsync(models);
+            return TryCatchMonitorAsync(task);
+        }
+
+        protected async Task TryCatchMonitorAsync(Task task, [CallerMemberName] string caller = null)
         {
             try
             {
@@ -47,12 +54,12 @@ namespace App.Examples
                 stopWatch.Start();
                 await task;
                 stopWatch.Stop();
-                _logger.LogInformation("{name} '{description}' took {duration}", caller, Description, stopWatch.Elapsed.ToString("g"));
+                Logger.LogInformation("{name} '{description}' took {duration}", caller, Description, stopWatch.Elapsed.ToString("g"));
                 await Task.Delay(TimeSpan.FromSeconds(1));
             }
             catch (Exception ex)
             {
-                _logger.LogError("An error has occurred in {caller}: {ex}", caller, ex);
+                Logger.LogError("An error has occurred in {caller}: {ex}", caller, ex);
             }
         }
     }

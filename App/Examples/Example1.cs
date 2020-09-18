@@ -10,14 +10,5 @@ namespace App.Examples
         }
 
         public override string Description { get; } = "Using Microsoft.Azure.Search Sdk";
-
-        //public async Task RunAsync()
-        //{
-        //    var searchModels = _searchModelBuilder.BuildSearchModels();
-        //    await _searchClient.SaveAsync(searchModels);
-        //    var count = await _searchClient.CountAsync();
-        //    _logger.LogInformation("Azure search contains {count} items", count);
-        //    await _searchClient.DeleteIndexAndDocumentsAsync();
-        //}
     }
 }

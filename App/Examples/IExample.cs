@@ -8,6 +8,7 @@ namespace App.Examples
     {
         string Description { get; }
         Task CountAsync();
+        Task SearchAsync();
         Task DeleteAllAsync();
         Task UploadAsync(ICollection<ISearchModel> models);
     }

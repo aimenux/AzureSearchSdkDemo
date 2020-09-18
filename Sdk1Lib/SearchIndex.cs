@@ -14,7 +14,7 @@ namespace Sdk1Lib
         [IsFilterable, IsSearchable]
         public string FullName { get; set; }
 
-        [IsFilterable]
+        [IsFilterable, IsSearchable]
         public string Email { get; set; }
 
         [IsSortable]

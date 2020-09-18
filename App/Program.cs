@@ -55,6 +55,7 @@ namespace App
             {
                 await example.UploadAsync(searchModels);
                 await example.CountAsync();
+                await example.SearchAsync();
                 await example.DeleteAllAsync();
             }
 

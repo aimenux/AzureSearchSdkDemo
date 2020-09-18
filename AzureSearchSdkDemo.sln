@@ -3,13 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App", "App\App.csproj", "{25AD6262-E2F1-4D2D-9649-8039B0F89CAA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App", "App\App.csproj", "{25AD6262-E2F1-4D2D-9649-8039B0F89CAA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{43F441A9-C86F-41CD-820D-6E6B04FC3C15}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{43F441A9-C86F-41CD-820D-6E6B04FC3C15}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sdk1Lib", "Sdk1Lib\Sdk1Lib.csproj", "{EC8E039C-82E9-4C5B-8FBF-EF3B5F6A8BBB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sdk1Lib", "Sdk1Lib\Sdk1Lib.csproj", "{EC8E039C-82E9-4C5B-8FBF-EF3B5F6A8BBB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sdk2Lib", "Sdk2Lib\Sdk2Lib.csproj", "{2757A5EB-1E8B-4023-BF61-A3C00257ACB4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sdk2Lib", "Sdk2Lib\Sdk2Lib.csproj", "{2757A5EB-1E8B-4023-BF61-A3C00257ACB4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{080B7FD7-D6C4-4317-A560-714B7FAA8900}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

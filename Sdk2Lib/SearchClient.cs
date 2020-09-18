@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Azure;
 using Azure.Search.Documents;
 using Azure.Search.Documents.Indexes;
 using Core;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Sdk2Lib
@@ -15,11 +13,9 @@ namespace Sdk2Lib
         private readonly Settings _settings;
         private readonly SearchClient _searchClient;
         private readonly SearchIndexClient _searchIndexClient;
-        private readonly ILogger _logger;
 
-        public SearchClient(IOptions<Settings> options, ILogger logger)
+        public SearchClient(IOptions<Settings> options)
         {
-            _logger = logger;
             _settings = options.Value;
             var credentials = new AzureKeyCredential(_settings.ApiKey);
             _searchIndexClient = new SearchIndexClient(_settings.BuildUri(), credentials);
@@ -39,7 +35,7 @@ namespace Sdk2Lib
 
         public Task DeleteDocumentsAsync(string keyName, ICollection<string> keysValues)
         {
-            throw new NotImplementedException();
+            return _searchClient.DeleteDocumentsAsync(keyName, keysValues);
         }
 
         public Task SaveAsync<TSearchModel>(ICollection<TSearchModel> models) where TSearchModel : ISearchModel
@@ -49,12 +45,28 @@ namespace Sdk2Lib
 
         public Task SaveAndOverwriteWhenExistsAsync<TSearchModel>(ICollection<TSearchModel> models) where TSearchModel : ISearchModel
         {
-            throw new NotImplementedException();
+            return _searchClient.MergeOrUploadDocumentsAsync(models);
         }
 
-        public Task<ICollection<TSearchModel>> GetAsync<TSearchModel>(string query, ISearchClientParameters parameters = null) where TSearchModel : ISearchModel
+        public async Task<ICollection<TSearchModel>> GetAsync<TSearchModel>(string query, ISearchClientParameters parameters = null) where TSearchModel : ISearchModel
         {
-            throw new NotImplementedException();
+            var options = parameters == null
+                ? null
+                : new SearchOptions
+                {
+                    Size = parameters.Top,
+                    Filter = parameters.Filter,
+                };
+
+            var searchModels = new List<TSearchModel>();
+            var searchResults = (await _searchClient.SearchAsync<TSearchModel>(query, options)).Value;
+
+            await foreach (var result in searchResults.GetResultsAsync())
+            {
+                searchModels.Add(result.Document);
+            }
+
+            return searchModels;
         }
     }
 }

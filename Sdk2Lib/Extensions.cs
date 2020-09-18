@@ -11,19 +11,21 @@ namespace Sdk2Lib
     {
         public static SearchClient GetOrCreateSearchClient<T>(this SearchIndexClient searchIndexClient, Settings settings)
         {
-            var isIndexExists = IsIndexExists(searchIndexClient, settings);
+            var indexName = settings.IndexName;
+
+            var isIndexExists = IsIndexExists(searchIndexClient, indexName);
             if (!isIndexExists)
             {
-                CreateIndex<T>(searchIndexClient, settings);
+                CreateIndex<T>(searchIndexClient, indexName);
             }
 
-            return searchIndexClient.GetSearchClient(settings.IndexName);
+            return searchIndexClient.GetSearchClient(indexName);
         }
 
-        private static void CreateIndex<T>(this SearchIndexClient searchIndexClient, Settings settings)
+        private static void CreateIndex<T>(this SearchIndexClient searchIndexClient, string indexName)
         {
             var filedBuilder = new FieldBuilder();
-            var indexDefinition = new AzureSearchIndex(settings.IndexName)
+            var indexDefinition = new AzureSearchIndex(indexName)
             {
                 Fields = filedBuilder.Build(typeof(T))
             };
@@ -31,11 +33,11 @@ namespace Sdk2Lib
             searchIndexClient.CreateIndex(indexDefinition);
         }
 
-        private static bool IsIndexExists(this SearchIndexClient searchIndexClient, Settings settings)
+        private static bool IsIndexExists(this SearchIndexClient searchIndexClient, string indexName)
         {
             try
             {
-                var indexResponse = searchIndexClient.GetIndex(settings.IndexName);
+                var indexResponse = searchIndexClient.GetIndex(indexName);
                 return indexResponse?.Value != null;
             }
             catch (Exception ex)
